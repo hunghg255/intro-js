@@ -62,6 +62,13 @@
   visibility: visible;
 }
 
+@media (max-width: 526px) {
+  .intro-tooltip {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
 .intro-tooltip-content {
   margin: 0 0 12px;
   padding: 12px 0;

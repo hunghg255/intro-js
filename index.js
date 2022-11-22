@@ -36,7 +36,7 @@ function getHeightElement(el) {
 }
 
 const scrollToElement = (element) => {
-  const elementPosition = element.getBoundingClientRect().top - 40;
+  const elementPosition = element.getBoundingClientRect().top - 140;
   const startPosition = window.pageYOffset;
   let startTime = 0;
   const duration = 300;
