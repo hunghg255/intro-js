@@ -1,6 +1,6 @@
 {
-  "name": "intro-js",
-  "version": "1.0.0",
+  "name": "introh-js",
+  "version": "1.0.1",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

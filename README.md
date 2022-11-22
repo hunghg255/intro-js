@@ -1,28 +1,28 @@
 # Intro for page
 
-[![npm version](https://badge.fury.io/js/intro-js.svg)](https://badge.fury.io/js/intro-js) [![npm](https://img.shields.io/npm/dw/intro-js.svg?logo=npm)](https://www.npmjs.com/package/intro-js) [![npm](https://img.shields.io/bundlephobia/minzip/intro-js)](https://www.npmjs.com/package/intro-js)
+[![npm version](https://badge.fury.io/js/introh-js.svg)](https://badge.fury.io/js/introh-js) [![npm](https://img.shields.io/npm/dw/introh-js.svg?logo=npm)](https://www.npmjs.com/package/introh-js) [![npm](https://img.shields.io/bundlephobia/minzip/introh-js)](https://www.npmjs.com/package/introh-js)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 
-[Live Demo](https://hunghg255.github.io/intro-js/demo/index.html)
+[Live Demo](https://hunghg255.github.io/introh-js/demo/index.html)
 
 ## Installation
 
-[![NPM](https://nodei.co/npm/intro-js.png?compact=true)](https://nodei.co/npm/intro-js/)
+[![NPM](https://nodei.co/npm/introh-js.png?compact=true)](https://nodei.co/npm/introh-js/)
 
 #### To install the latest stable version:
 
 ```
-npm install --save intro-js
+npm install --save introh-js
 
 or
 
-yarn add intro-js
+yarn add introh-js
 ```
 
 #### Basic usage:
 
 ```css
-@import 'intro-js/dist/styles.css';
+@import 'introh-js/dist/styles.css';
 ```
 
 ```ts
