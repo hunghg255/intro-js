@@ -3,7 +3,7 @@ const DEFAULT_OPTIONS = {
   isStart: true,
 };
 
-function offset(el) {
+function getOffet(el) {
   if (!el) {
     return {
       left: 0,
@@ -12,13 +12,14 @@ function offset(el) {
   }
 
   const rect = el.getBoundingClientRect();
+  const bodyRect = document.body.getBoundingClientRect();
   return {
-    top: rect.top + document.body.scrollTop,
-    left: rect.left + document.body.scrollLeft,
+    top: rect.top - bodyRect.top + 8,
+    left: rect.left,
   };
 }
 
-function outerWidth(el) {
+function getWidthElement(el) {
   let _width = el.offsetWidth;
   const style = el.currentStyle || getComputedStyle(el);
 
@@ -26,14 +27,43 @@ function outerWidth(el) {
   return _width;
 }
 
-function outerHeight(el) {
+function getHeightElement(el) {
   let _height = el.offsetHeight;
   const style = el.currentStyle || getComputedStyle(el);
 
   _height += parseInt(style.marginLeft, 10) || 0;
   return _height;
 }
+
+const scrollToElement = (element) => {
+  const elementPosition = element.getBoundingClientRect().top - 40;
+  const startPosition = window.pageYOffset;
+  let startTime = 0;
+  const duration = 500;
+
+  function animate(currentTime) {
+    if (!startTime) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+
+    const run = easeInOutSine(
+      timeElapsed,
+      startPosition,
+      elementPosition,
+      duration
+    );
+    window.scrollTo(0, run);
+    if (timeElapsed < duration) requestAnimationFrame(animate);
+  }
+
+  function easeInOutSine(t, b, c, d) {
+    return (-c / 2) * (Math.cos((Math.PI * t) / d) - 1) + b;
+  }
+
+  requestAnimationFrame(animate);
+};
+
 const SPACE = 20;
+const TOOLTIP_WIDTH = 320;
 
 class Introjs {
   steps;
@@ -78,9 +108,9 @@ class Introjs {
 
     if (nextStep) {
       nextStep.classList.add('intro-element-focus');
-      const offsetEle = offset(nextStep);
-      const width = outerWidth(nextStep);
-      const height = outerHeight(nextStep);
+      const offsetEle = getOffet(nextStep);
+      const width = getWidthElement(nextStep);
+      const height = getHeightElement(nextStep);
 
       this.elementGlass.style.width = `${width + 12}px`;
       this.elementGlass.style.height = `${height + 12}px`;
@@ -119,6 +149,10 @@ class Introjs {
     window.addEventListener('resize', this.runStep.bind(this));
 
     this.elementMask.addEventListener('click', this.finish.bind(this));
+
+    this.elementGlass.addEventListener('transitionend', () => {
+      scrollToElement(this.elementGlass);
+    });
   }
 
   finish() {
@@ -137,6 +171,7 @@ class Introjs {
     this.elementNext = null;
     this.elementPrev = null;
     this.elementTooltip = null;
+    window.removeEventListener('resize', this.runStep.bind(this));
   }
 
   defineTooltip({ offsetEle, width, height }) {
@@ -176,19 +211,18 @@ class Introjs {
   }
 
   getPositionOfTooltip({ offsetEle, width, height }) {
-    const widthTooltip = outerWidth(this.elementTooltip);
-    const heightTooltip = outerHeight(this.elementTooltip);
+    const widthTooltip = TOOLTIP_WIDTH;
+    const heightTooltip = getHeightElement(this.elementTooltip);
     if (window.innerWidth - (offsetEle.left + width) > widthTooltip) {
       return {
         topTooltip: offsetEle.top,
         leftTooltip: offsetEle.left + width + SPACE,
       };
     }
-
     if (offsetEle.left > widthTooltip) {
       return {
         topTooltip: offsetEle.top,
-        leftTooltip: offsetEle.left - width - SPACE,
+        leftTooltip: offsetEle.left - widthTooltip - SPACE,
       };
     }
 
@@ -201,7 +235,7 @@ class Introjs {
 
     if (offsetEle.top > heightTooltip) {
       return {
-        topTooltip: offsetEle.top - height - SPACE,
+        topTooltip: offsetEle.top - heightTooltip - SPACE,
         leftTooltip: offsetEle.left,
       };
     }
