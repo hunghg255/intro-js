@@ -39,7 +39,7 @@ const scrollToElement = (element) => {
   const elementPosition = element.getBoundingClientRect().top - 40;
   const startPosition = window.pageYOffset;
   let startTime = 0;
-  const duration = 500;
+  const duration = 300;
 
   function animate(currentTime) {
     if (!startTime) startTime = currentTime;
@@ -97,7 +97,7 @@ class Introjs {
     this.actions();
   }
 
-  runStep() {
+  runStep = () => {
     this.stepActive = this.steps[this.currentStep];
 
     const elementStepActive = document.querySelector('.intro-element-focus');
@@ -123,7 +123,7 @@ class Introjs {
         height,
       });
     }
-  }
+  };
 
   actions() {
     if (!this.elementPrev)
@@ -131,31 +131,35 @@ class Introjs {
     if (!this.elementNext)
       this.elementNext = document.querySelector('.intro-btn-next');
 
-    this.elementNext.addEventListener('click', () => {
-      if (this.currentStep < this.steps.length - 1) {
-        this.currentStep = this.currentStep + 1;
-        this.runStep();
-        return;
-      }
-      this.finish();
-    });
-    this.elementPrev.addEventListener('click', () => {
-      if (this.currentStep > 0) {
-        this.currentStep = this.currentStep - 1;
-        this.runStep();
-      }
-    });
+    this.elementNext.addEventListener('click', this.handleNextStep);
+    this.elementPrev.addEventListener('click', this.handlePrevStep);
 
-    window.addEventListener('resize', this.runStep.bind(this));
+    window.addEventListener('resize', this.runStep);
 
-    this.elementMask.addEventListener('click', this.finish.bind(this));
+    this.elementMask.addEventListener('click', this.finish);
 
     this.elementGlass.addEventListener('transitionend', () => {
       scrollToElement(this.elementGlass);
     });
   }
 
-  finish() {
+  handleNextStep = () => {
+    if (this.currentStep < this.steps.length - 1) {
+      this.currentStep = this.currentStep + 1;
+      this.runStep();
+      return;
+    }
+    this.finish();
+  };
+
+  handlePrevStep = () => {
+    if (this.currentStep > 0) {
+      this.currentStep = this.currentStep - 1;
+      this.runStep();
+    }
+  };
+
+  finish = () => {
     this.elementTooltip.remove();
     this.elementGlass.remove();
     this.elementMask.remove();
@@ -171,8 +175,8 @@ class Introjs {
     this.elementNext = null;
     this.elementPrev = null;
     this.elementTooltip = null;
-    window.removeEventListener('resize', this.runStep.bind(this));
-  }
+    window.removeEventListener('resize', this.runStep);
+  };
 
   defineTooltip({ offsetEle, width, height }) {
     this.elementTooltip = document.querySelector('.intro-tooltip');
