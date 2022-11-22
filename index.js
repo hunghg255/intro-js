@@ -3,7 +3,11 @@ const DEFAULT_OPTIONS = {
   isStart: true,
 };
 
-function getOffet(el) {
+const SPACE = 20;
+const TOOLTIP_WIDTH = 320;
+const TIME_30_DAYS = 30 * 24 * 60 * 60 * 1000;
+
+function getOffsetElement(el) {
   if (!el) {
     return {
       left: 0,
@@ -62,10 +66,6 @@ const scrollToElement = (element) => {
   requestAnimationFrame(animate);
 };
 
-const SPACE = 20;
-const TOOLTIP_WIDTH = 320;
-const TIME_30_DAYS = 30 * 24 * 60 * 60 * 1000;
-
 class Introjs {
   steps;
   isStart;
@@ -101,8 +101,27 @@ class Introjs {
     this.defineElementGlass();
 
     this.runStep();
-    this.actions();
+    this.initEvent();
   }
+
+  finish = () => {
+    this.elementTooltip.remove();
+    this.elementGlass.remove();
+    this.elementMask.remove();
+    const elementStepActive = document.querySelector('.intro-element-focus');
+
+    if (elementStepActive)
+      elementStepActive.classList.remove('intro-element-focus');
+
+    this.elementMask = null;
+    this.elementGlass = null;
+    this.currentStep = 0;
+    this.stepActive = null;
+    this.elementNext = null;
+    this.elementPrev = null;
+    this.elementTooltip = null;
+    window.removeEventListener('resize', this.runStep);
+  };
 
   runStep = () => {
     this.stepActive = this.steps[this.currentStep];
@@ -115,7 +134,7 @@ class Introjs {
 
     if (nextStep) {
       nextStep.classList.add('intro-element-focus');
-      const offsetEle = getOffet(nextStep);
+      const offsetEle = getOffsetElement(nextStep);
       const width = getWidthElement(nextStep);
       const height = getHeightElement(nextStep);
 
@@ -133,7 +152,7 @@ class Introjs {
     }
   };
 
-  actions() {
+  initEvent() {
     if (!this.elementPrev)
       this.elementPrev = document.querySelector('.intro-btn-prev');
     if (!this.elementNext)
@@ -166,62 +185,6 @@ class Introjs {
       this.runStep();
     }
   };
-
-  finish = () => {
-    this.elementTooltip.remove();
-    this.elementGlass.remove();
-    this.elementMask.remove();
-    const elementStepActive = document.querySelector('.intro-element-focus');
-
-    if (elementStepActive)
-      elementStepActive.classList.remove('intro-element-focus');
-
-    this.elementMask = null;
-    this.elementGlass = null;
-    this.currentStep = 0;
-    this.stepActive = null;
-    this.elementNext = null;
-    this.elementPrev = null;
-    this.elementTooltip = null;
-    window.removeEventListener('resize', this.runStep);
-  };
-
-  defineTooltip({ offsetEle, width, height }) {
-    this.elementTooltip = document.querySelector('.intro-tooltip');
-
-    if (!this.elementTooltip) {
-      const div = document.createElement('div');
-      div.classList.add('intro-tooltip');
-      div.insertAdjacentHTML(
-        'beforeend',
-        `
-      <div class="intro-tooltip-content"></div>
-      <div class="intro-btns">
-      <button class="intro-btn-prev">Prev</button>
-      <div class="intro-dots"></div>
-      <button class="intro-btn-next">Next</button>
-      </div>
-    `
-      );
-      document.body.appendChild(div);
-      this.elementTooltip = document.querySelector('.intro-tooltip');
-    }
-
-    const elementTooltipContent = this.elementTooltip.querySelector(
-      '.intro-tooltip-content'
-    );
-    if (elementTooltipContent)
-      elementTooltipContent.innerHTML = this.stepActive.children;
-
-    const { topTooltip, leftTooltip } = this.getPositionOfTooltip({
-      offsetEle,
-      width,
-      height,
-    });
-
-    this.elementTooltip.style.top = `${topTooltip}px`;
-    this.elementTooltip.style.left = `${leftTooltip}px`;
-  }
 
   updateDotsActive() {
     const elementDotWrap = document.querySelector('.intro-dots');
@@ -268,6 +231,43 @@ class Introjs {
       topTooltip: offsetEle.top,
       leftTooltip: offsetEle.left,
     };
+  }
+
+  defineTooltip({ offsetEle, width, height }) {
+    this.elementTooltip = document.querySelector('.intro-tooltip');
+
+    if (!this.elementTooltip) {
+      const div = document.createElement('div');
+      div.classList.add('intro-tooltip');
+      div.insertAdjacentHTML(
+        'beforeend',
+        `
+      <div class="intro-tooltip-content"></div>
+      <div class="intro-btns">
+      <button class="intro-btn-prev">Prev</button>
+      <div class="intro-dots"></div>
+      <button class="intro-btn-next">Next</button>
+      </div>
+    `
+      );
+      document.body.appendChild(div);
+      this.elementTooltip = document.querySelector('.intro-tooltip');
+    }
+
+    const elementTooltipContent = this.elementTooltip.querySelector(
+      '.intro-tooltip-content'
+    );
+    if (elementTooltipContent)
+      elementTooltipContent.innerHTML = this.stepActive.children;
+
+    const { topTooltip, leftTooltip } = this.getPositionOfTooltip({
+      offsetEle,
+      width,
+      height,
+    });
+
+    this.elementTooltip.style.top = `${topTooltip}px`;
+    this.elementTooltip.style.left = `${leftTooltip}px`;
   }
 
   defineElementMask() {
