@@ -66,7 +66,7 @@ const scrollToElement = (element) => {
   requestAnimationFrame(animate);
 };
 
-class Introjs {
+class IntroJs {
   steps;
   isStart;
   elementMask;
@@ -85,11 +85,11 @@ class Introjs {
 
   init() {
     if (this.isStart) {
-      let time = localStorage.getItem('introjs-time');
+      let time = localStorage.getItem('J-time');
       const currentTime = new Date().getTime();
 
       if (!time || currentTime - time > TIME_30_DAYS) {
-        localStorage.setItem('introjs-time', currentTime);
+        localStorage.setItem('J-time', currentTime);
         this.start();
       }
     }
@@ -297,34 +297,4 @@ class Introjs {
   }
 }
 
-document.addEventListener(
-  'DOMContentLoaded',
-  () => {
-    const steps = [
-      {
-        element: '.title',
-        children: 'Title One',
-      },
-      {
-        element: '.second',
-        children: 'Title Two',
-      },
-      {
-        element: '.three',
-        children: 'Title Three',
-      },
-      {
-        element: '.cat',
-        children: 'Cat',
-      },
-    ];
-    const instante = new Introjs({
-      steps,
-    });
-
-    document.querySelector('.btn-start-intro').addEventListener('click', () => {
-      instante.start();
-    });
-  },
-  false
-);
+export default IntroJs;
