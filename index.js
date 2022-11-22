@@ -122,6 +122,7 @@ class Introjs {
         width,
         height,
       });
+      this.updateDotsActive();
     }
   };
 
@@ -188,8 +189,9 @@ class Introjs {
         'beforeend',
         `
       <div class="intro-tooltip-content"></div>
-      <div>
+      <div class="intro-btns">
         <button class="intro-btn-prev">Next</button>
+        <div class="intro-dots"></div>
         <button class="intro-btn-next">Prev</button>
       </div>
     `
@@ -212,6 +214,17 @@ class Introjs {
 
     this.elementTooltip.style.top = `${topTooltip}px`;
     this.elementTooltip.style.left = `${leftTooltip}px`;
+  }
+
+  updateDotsActive() {
+    const elementDotWrap = document.querySelector('.intro-dots');
+
+    elementDotWrap.innerHTML = this.steps
+      .map(
+        (_, idx) =>
+          `<div class="${this.currentStep === idx ? 'active' : ''}"></div>`
+      )
+      .join('');
   }
 
   getPositionOfTooltip({ offsetEle, width, height }) {
@@ -292,6 +305,10 @@ document.addEventListener(
       {
         element: '.three',
         children: 'Title Three',
+      },
+      {
+        element: '.cat',
+        children: 'Cat',
       },
     ];
     const instante = new Introjs({
