@@ -64,6 +64,7 @@ const scrollToElement = (element) => {
 
 const SPACE = 20;
 const TOOLTIP_WIDTH = 320;
+const TIME_30_DAYS = 30 * 24 * 60 * 60 * 1000;
 
 class Introjs {
   steps;
@@ -84,7 +85,13 @@ class Introjs {
 
   init() {
     if (this.isStart) {
-      this.start();
+      let time = localStorage.getItem('introjs-time');
+      const currentTime = new Date().getTime();
+
+      if (!time || currentTime - time > TIME_30_DAYS) {
+        localStorage.setItem('introjs-time', currentTime);
+        this.start();
+      }
     }
   }
 
@@ -313,6 +320,10 @@ document.addEventListener(
     ];
     const instante = new Introjs({
       steps,
+    });
+
+    document.querySelector('.btn-start-intro').addEventListener('click', () => {
+      instante.start();
     });
   },
   false
