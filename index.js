@@ -190,9 +190,9 @@ class Introjs {
         `
       <div class="intro-tooltip-content"></div>
       <div class="intro-btns">
-        <button class="intro-btn-prev">Next</button>
-        <div class="intro-dots"></div>
-        <button class="intro-btn-next">Prev</button>
+      <button class="intro-btn-next">Prev</button>
+      <div class="intro-dots"></div>
+      <button class="intro-btn-prev">Next</button>
       </div>
     `
       );
