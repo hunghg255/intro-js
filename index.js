@@ -33,6 +33,7 @@ function outerHeight(el) {
   _height += parseInt(style.marginLeft, 10) || 0;
   return _height;
 }
+const SPACE = 20;
 
 class Introjs {
   steps;
@@ -43,6 +44,7 @@ class Introjs {
   stepActive;
   elementNext;
   elementPrev;
+  elementTooltip;
 
   constructor(options = {}) {
     this.setOptions(options);
@@ -67,7 +69,6 @@ class Introjs {
 
   runStep() {
     this.stepActive = this.steps[this.currentStep];
-    console.log(this.stepActive);
 
     const elementStepActive = document.querySelector('.intro-element-focus');
     if (elementStepActive && this.currentStep !== 0)
@@ -77,18 +78,20 @@ class Introjs {
 
     if (nextStep) {
       nextStep.classList.add('intro-element-focus');
-      console.log(nextStep);
       const offsetEle = offset(nextStep);
       const width = outerWidth(nextStep);
       const height = outerHeight(nextStep);
-      console.log({
+
+      this.elementGlass.style.width = `${width + 12}px`;
+      this.elementGlass.style.height = `${height + 12}px`;
+      this.elementGlass.style.top = `${offsetEle.top - 6}px`;
+      this.elementGlass.style.left = `${offsetEle.left - 6}px`;
+
+      this.defineTooltip({
+        offsetEle,
         width,
         height,
       });
-      this.elementGlass.style.width = `${width}px`;
-      this.elementGlass.style.height = `${height}px`;
-      this.elementGlass.style.top = `${offsetEle.top}px`;
-      this.elementGlass.style.left = `${offsetEle.left}px`;
     }
   }
 
@@ -102,8 +105,111 @@ class Introjs {
       if (this.currentStep < this.steps.length - 1) {
         this.currentStep = this.currentStep + 1;
         this.runStep();
+        return;
+      }
+      this.finish();
+    });
+    this.elementPrev.addEventListener('click', () => {
+      if (this.currentStep > 0) {
+        this.currentStep = this.currentStep - 1;
+        this.runStep();
       }
     });
+
+    window.addEventListener('resize', this.runStep.bind(this));
+
+    this.elementMask.addEventListener('click', this.finish.bind(this));
+  }
+
+  finish() {
+    this.elementTooltip.remove();
+    this.elementGlass.remove();
+    this.elementMask.remove();
+    const elementStepActive = document.querySelector('.intro-element-focus');
+
+    if (elementStepActive)
+      elementStepActive.classList.remove('intro-element-focus');
+
+    this.elementMask = null;
+    this.elementGlass = null;
+    this.currentStep = 0;
+    this.stepActive = null;
+    this.elementNext = null;
+    this.elementPrev = null;
+    this.elementTooltip = null;
+  }
+
+  defineTooltip({ offsetEle, width, height }) {
+    this.elementTooltip = document.querySelector('.intro-tooltip');
+
+    if (!this.elementTooltip) {
+      const div = document.createElement('div');
+      div.classList.add('intro-tooltip');
+      div.insertAdjacentHTML(
+        'beforeend',
+        `
+      <div class="intro-tooltip-content"></div>
+      <div>
+        <button class="intro-btn-prev">Next</button>
+        <button class="intro-btn-next">Prev</button>
+      </div>
+    `
+      );
+      document.body.appendChild(div);
+      this.elementTooltip = document.querySelector('.intro-tooltip');
+    }
+
+    const elementTooltipContent = this.elementTooltip.querySelector(
+      '.intro-tooltip-content'
+    );
+    if (elementTooltipContent)
+      elementTooltipContent.innerHTML = this.stepActive.children;
+
+    const { topTooltip, leftTooltip } = this.getPositionOfTooltip({
+      offsetEle,
+      width,
+      height,
+    });
+
+    this.elementTooltip.style.top = `${topTooltip}px`;
+    this.elementTooltip.style.left = `${leftTooltip}px`;
+  }
+
+  getPositionOfTooltip({ offsetEle, width, height }) {
+    const widthTooltip = outerWidth(this.elementTooltip);
+    const heightTooltip = outerHeight(this.elementTooltip);
+    if (window.innerWidth - (offsetEle.left + width) > widthTooltip) {
+      return {
+        topTooltip: offsetEle.top,
+        leftTooltip: offsetEle.left + width + SPACE,
+      };
+    }
+
+    if (offsetEle.left > widthTooltip) {
+      return {
+        topTooltip: offsetEle.top,
+        leftTooltip: offsetEle.left - width - SPACE,
+      };
+    }
+
+    if (window.innerHeight - (offsetEle.top + height) > heightTooltip) {
+      return {
+        topTooltip: offsetEle.top + height + SPACE,
+        leftTooltip: offsetEle.left,
+      };
+    }
+
+    if (offsetEle.top > heightTooltip) {
+      return {
+        topTooltip: offsetEle.top - height - SPACE,
+        leftTooltip: offsetEle.left,
+      };
+    }
+
+    return {
+      topTooltip: offsetEle.top,
+      leftTooltip: offsetEle.left,
+    };
   }
 
   defineElementMask() {
@@ -139,15 +245,15 @@ document.addEventListener(
     const steps = [
       {
         element: '.title',
-        children: 'Title',
+        children: 'Title One',
       },
       {
         element: '.second',
-        children: 'Title',
+        children: 'Title Two',
       },
       {
         element: '.three',
-        children: 'Title',
+        children: 'Title Three',
       },
     ];
     const instante = new Introjs({
