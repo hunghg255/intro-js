@@ -140,7 +140,7 @@ class IntroJs {
 
       this.elementGlass.style.width = `${width + 12}px`;
       this.elementGlass.style.height = `${height + 12}px`;
-      this.elementGlass.style.top = `${offsetEle.top - 6}px`;
+      this.elementGlass.style.top = `${offsetEle.top - 12}px`;
       this.elementGlass.style.left = `${offsetEle.left - 6}px`;
 
       this.defineTooltip({
