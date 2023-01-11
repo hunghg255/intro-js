@@ -1,7 +1,7 @@
 # Intro for page
 
-[![npm version](https://badge.fury.io/js/introh-js.svg)](https://badge.fury.io/js/introh-js) [![npm](https://img.shields.io/npm/dw/introh-js.svg?logo=npm)](https://www.npmjs.com/package/introh-js) [![npm](https://img.shields.io/bundlephobia/minzip/introh-js)](https://www.npmjs.com/package/introh-js)
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![npm version](https://badge.fury.io/js/introh-js.svg)](https://badge.fury.io/js/introh-js) [![npm](https://img.shields.io/npm/dt/introh-js.svg?logo=npm)](https://www.npmjs.com/package/introh-js) [![npm](https://img.shields.io/bundlephobia/minzip/introh-js)](https://www.npmjs.com/package/introh-js)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg)](#contributors-)
 
 [Live Demo](https://hunghg255.github.io/intro-js/demo/index.html)
 
