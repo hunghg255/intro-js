@@ -1,7 +1,19 @@
-# Intro for page
+<p align="center">
+<a href="https://www.npmjs.com/package/introh-js" target="_blank" rel="noopener noreferrer">
+<img src="https://api.iconify.design/bi:bar-chart-steps.svg?color=%23fdb4e2" alt="logo" width='100'/></a>
+</p>
 
-[![npm version](https://badge.fury.io/js/introh-js.svg)](https://badge.fury.io/js/introh-js) [![npm](https://img.shields.io/npm/dt/introh-js.svg?logo=npm)](https://www.npmjs.com/package/introh-js) [![npm](https://img.shields.io/bundlephobia/minzip/introh-js)](https://www.npmjs.com/package/introh-js)
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg)](#contributors-)
+<p align="center">
+  A library intro for your website
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/introh-js" target="_blank" rel="noopener noreferrer"><img src="https://badge.fury.io/js/csvs-parsers.svg" alt="NPM Version" /></a>
+  <a href="https://www.npmjs.com/package/introh-js" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/npm/dt/csvs-parsers.svg?logo=npm" alt="NPM Downloads" /></a>
+  <a href="https://bundlephobia.com/result?p=introh-js" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/bundlephobia/minzip/introh-js" alt="Minizip" /></a>
+  <a href="https://github.com/hunghg255/introh-js/graphs/contributors" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/all_contributors-1-orange.svg" alt="Contributors" /></a>
+  <a href="https://github.com/hunghg255/introh-js/blob/main/LICENSE" target="_blank" rel="noopener noreferrer"><img src="https://badgen.net/github/license/hunghg255/introh-js" alt="License" /></a>
+</p>
 
 [Live Demo](https://hunghg255.github.io/intro-js/demo/index.html)
 
